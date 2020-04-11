@@ -1,0 +1,94 @@
+    <ons-page class="main_pages"  id="search-page">
+      <ons-toolbar>
+        <div class="center"><ons-search-input id="search" class="search_box" onkeypress="searchPhoto(event)" placeholder="Search"></ons-search-input></div>
+      </ons-toolbar>
+
+      <div>
+        <div>
+          <ons-progress-circular indeterminate class="loading"></ons-progress-circular>
+          <ons-row id="photos">
+          </ons-row>
+        </div>
+      </div>
+      <template id="thumbnailTemplate">
+        <div>
+          {{#photos}}
+            <ons-col>
+              <img class="search_thumbnail" onclick="tapPhoto('{{objectId}}')" src="{{fileUrl}}">
+            </ons-col>
+          {{/photos}}
+        </div>
+      </template>
+      <style type="text/css">
+        .stories-tab {
+          padding-top: 8px;
+          background-color: #f6f6f6;
+          height: 75px;
+          font-size: 12px
+        }
+
+        .story {
+          display: inline-table;
+        }
+
+        .story p {
+          width: 100%;
+          max-width: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin: 0;
+          text-transform: none
+        }
+
+        .story-thumbnail-wraper {
+          text-align: center;
+          border-radius: 50%;
+        }
+
+        .story-thumbnail {
+          padding: 2px;
+          width: 45px;
+          border-radius: 50%;
+          vertical-align: middle;
+        }
+
+        .story-thumbnail:active {
+          width: 40px;
+          transition: width 0.1s, height 0.1s;
+        }
+
+        .unread {
+          border: 3px solid #d31010;
+        }
+
+        .read {
+          border: 2px solid #afafaf;
+        }
+
+        .search_wrapper {
+          flex-basis: 100px;
+          margin-left: 0.25%;
+          margin-right: 0.25%;
+        }
+
+        .search_thumbnail {
+          width: 100%;
+        }
+
+        .search_box {
+          width: 90%;
+          padding-top: 7px;
+        }
+
+        .toolbar--material__center .search_box {
+          padding-top: 14px;
+        }
+
+        .search-input {
+          text-align: center;
+          height: 28px;
+        }
+      </style>
+
+    </ons-page>
+
