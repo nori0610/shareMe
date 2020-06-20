@@ -1,0 +1,60 @@
+
+/** single css */
+.post .single {
+  background-color: #e5e5e5;
+}
+
+.item_thumbnail_card_card {
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 0;
+}
+
+.item_thumbnail {
+  width: 100%;
+}
+
+.item_header {
+  font-weight: bold;
+  padding: 15px;
+  margin-top: 10px;    
+}
+
+.item_thumbnail_card_card.card {
+  padding: 10px;
+}
+
+.item_button {
+  background-color: #53b393;
+  border-radius: 6px;
+  margin: 6px;
+  text-align: center;
+  padding: 5px 8px 5px 8px;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.item_title {
+  color: #7c7d7e;
+}
+
+.slick-dots li button:before {
+  font-size: 10px!important; 
+}
+
+.slick-next {
+  right: 2px!important;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #454545 !important;
+}
+
+.next_comment_link {
+  text-align: center;
+  padding: 12px;
+  color: #5065ff;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+

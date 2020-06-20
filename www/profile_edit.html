@@ -1,0 +1,144 @@
+<ons-page class="main_pages" id="profile-edit">
+
+    <ons-toolbar>
+        <div class="left" onclick="nav.popPage();"><span class="profile_edit_cancel" style="">キャンセル</span></div>
+        <div class="center"><span class="profile_edit_subject" style="">プロフィール編集</span></div>
+        <div class="right" onclick="profileSave();"><span class="profile_edit_save_off" style="">保存</span></div>
+    </ons-toolbar>
+
+    <div class="profile_edit_area1" style="">
+        <span class="profile_edit_area1_subject" style="">画像を選択</span>
+    </div>
+
+  <ons-list>
+    <ons-list-item class="edit-list-item" tappable style="padding: 7px;" id="profileImageUpload">
+
+        <span class="profile_edit_image" style="">プロフィール画像</span>
+        <span id="previewProfileImageComp" style="">選択済</span>
+        <canvas id="previewProfileImageFile" style=""></canvas>
+    
+    </ons-list-item>
+  </ons-list>
+
+    <div class="profile_edit_area2" style="">
+        <span class="profile_edit_area2_subject" style="">基本情報</span>
+    </div>
+
+
+  <ons-list>
+    <ons-list-item class="edit-list-item" tappable style="padding: 7px;">
+
+        <label class="profile_edit_label" for="user_name" style="">名前</label>
+        <ons-input class="profile-edit-input" input-id="user_name" style="width: 80%;margin: auto;"></ons-input>
+
+    </ons-list-item>
+    <ons-list-item class="edit-list-item" tappable style="border-top: solid 1px #d9d9d9;padding: 7px;">
+
+        <label class="profile_edit_label" for="sex" style="">性別</label>
+
+        <ons-radio name="color" class="right" input-id="sex-1" checked></ons-radio>
+        <label for="radio-1" class="right" style="font-size: 0.8rem;margin: 0;padding: 0;">MEN</label>
+        <ons-radio name="color" class="right" input-id="sex-2" style="margin-left: 5%;"></ons-radio>
+        <label for="radio-2" class="right" style="font-size: 0.8rem;margin: 0;padding: 0;padding-right: 5%;">WOMEN</label>
+
+    </ons-list-item>
+    <ons-list-item class="edit-list-item" tappable style="border-top: solid 1px #d9d9d9;padding: 7px;">
+
+        <label class="profile_edit_label" for="height" style="">身長</label>
+        <ons-input type="number" min="0" max="220" class="profile-edit-input" input-id="height" style="width: 80%;margin: auto;"></ons-input>
+
+    </ons-list-item>
+    <ons-list-item class="edit-list-item" tappable style="border-top: solid 1px #d9d9d9;padding: 7px;">
+
+        <label class="profile_edit_label" for="old" style="">年齢</label>
+        <ons-input type="number" min="0" max="120" class="profile-edit-input" input-id="old" style="width: 80%;margin: auto;"></ons-input>
+
+    </ons-list-item>
+  </ons-list>
+
+  <template id="edit-notice1.html">
+    <ons-alert-dialog id="edit-notice1" modifier="rowfooter">
+      <div class="alert-dialog-content">
+        ユーザ情報の更新が完了しました。
+      </div>
+      <div class="alert-dialog-footer">
+        <ons-alert-dialog-button onclick="hideAlertDialog('edit-notice1')">OK</ons-alert-dialog-button>
+      </div>
+    </ons-alert-dialog>
+  </template>
+
+  <input style="display: none;" type="file" id="profileImageFile" />
+
+<style>
+.profile-edit-input input {
+  text-align: right;
+}
+.list-item__center {
+  padding: 0px;
+}
+.list-item__right {
+  padding: 0px;
+}
+.edit-list-item div,
+.edit-list-item .list-item__right {
+  background-image: none;
+}
+</style>
+
+<!--
+    <h2 class="register_title">新規登録</h2>
+    
+    <div class="register_input">
+        <p style="margin-bottom: 0px;">
+            <ons-input id="register_id" modifier="" placeholder="メールアドレス" float></ons-input>
+        </p>
+        <p>
+            <ons-button class="register_button" modifier="large" onclick="user_regist();">新規登録</ons-button>
+        </p>
+    </div>
+
+    <template id="regist-error1.html">
+      <ons-alert-dialog id="regist-error1" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          メールアドレスを入力してください。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error1')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-error2.html">
+      <ons-alert-dialog id="regist-error2" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          正しいメールアドレスを入力してください。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error2')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-error3.html">
+      <ons-alert-dialog id="regist-error3" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          入力されたメールアドレスは既に登録されています。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error3')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-notice1.html">
+      <ons-alert-dialog id="regist-notice1" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          登録メールを送信しました。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-notice1')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+-->
+</ons-page>

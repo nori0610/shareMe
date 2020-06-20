@@ -2,7 +2,7 @@
 <ons-page class="main_pages" id="single-page">
   <ons-toolbar>
     <div class="left">
-      <ons-back-button>Back</ons-back-button>
+      <ons-back-button></ons-back-button>
     </div>
     <div class="center photo-title"></div>
   </ons-toolbar>
@@ -47,7 +47,7 @@
 
   .post-like {
     opacity: 0;
-    width: 100%;
+    /* width: 100%; */
     position: absolute;
     top: 25%;
     color: white;
@@ -79,5 +79,88 @@
     border-radius: 50%;
   }
 </style>
+
+
+<template id="single_photo">
+  <ons-card id="{{id}}" class="post">
+
+    <ons-list-item class="post_title single">
+      <div class="left">
+        <img class="profile_image list-item__thumbnail" src="{{user_icon}}" onclick="{{onclickuser}}">
+      </div>
+      <div class="center">
+        <div class="list-item__title"><b>{{photo.user.userName}}</b></div>
+        <div class="list-item__subtitle" style="font-size: 12px">{{photo.location}}</div>
+      </div>
+      <div class="right">
+        <ons-button class="corner-button" modifier="quiet">
+          <ons-icon icon="ion-ios-more,material:ion-android-more-vertical"></ons-icon>
+        </ons-button>
+      </div>
+    </ons-list-item>
+
+    <div id="profile-post-image" style="text-align: center; position: relative;">
+      <ons-icon size="150px" class="post-like-{{id}} post-like" icon="ion-ios-heart" onclick="{{onclickphoto}}"></ons-icon><!--ondblclick="like('{{id}}')"-->
+      <ul class="slider" style="padding: 0;margin-right: 30px;margin-left: 10px;">
+        <li><img id="single-image-01" class="post-image" width="320" height="320" src="{{photo.fileUrl}}"></a></li>
+        <li><img id="single-image-02" class="post-image" width="320" height="320" src="{{photo.fileUrl2}}"></a></li>
+        <li><img id="single-image-03" class="post-image" width="320" height="320" src="{{photo.fileUrl3}}"></a></li>
+      </ul>
+    </div>
+
+    <ons-list-item class="post-button-bar" modifier="nodivider">
+      <div class="center" style="padding-top: 0px">
+        <ons-button class="post-button" modifier="quiet" onclick="like('{{id}}')">
+          {{#photo.liked}}
+            <ons-icon class="button-post-like-{{id}} ion-ios-heart like" icon="ion-ios-heart"></ons-icon>
+          {{/photo.liked}}
+          {{^photo.liked}}
+            <ons-icon class="button-post-like-{{id}}" icon="ion-ios-heart-outline"></ons-icon>
+          {{/photo.liked}}
+        </ons-button>
+        <ons-button class="post-button" modifier="quiet" onclick="comment('{{id}}')"><ons-icon icon="ion-ios-chatbubble-outline"></ons-icon></ons-button>
+        <ons-button class="post-button" modifier="quiet"><ons-icon icon="ion-ios-paperplane-outline"></ons-icon></ons-button>
+      </div>
+      <div class="right corner-button bookmark">
+        <ons-button class="post-button" modifier="quiet"><ons-icon icon="md-bookmark-outline"></ons-icon></ons-button>
+      </div>
+    </ons-list-item>
+
+    <div class="post-like-count">
+      いいね!: <span id="like_count"></span>件
+    </div>
+
+    <div class="post-like-info">
+      {{{favorite_message}}}
+    </div>
+    <div class="post-caption"><b>{{photo.user.userName}}</b> {{photo.message}} </div>
+    <div class="post-time">{{photo.timeAgo}}</div>
+    
+    <div class="post-comments">
+      {{{messages}}}
+    </div>
+
+    <div class="item_header">
+      商品情報
+    </div>
+
+    <div>
+      <div>
+        <ons-row id="items">
+        </ons-row>
+      </div>
+    </div>
+    
+  </ons-card>
+</template>
+
+<ons-row id="item_thumbnail_card" style="display: none;">
+  <ons-col class="item_thumbnail_card_col" onclick="">
+      <ons-card class="item_thumbnail_card_card">
+        <div class="item_title"></div>
+        <div class="item_button">購入する</div>
+      </ons-card>
+  </ons-col>
+</ons-row>
 
 </ons-page>

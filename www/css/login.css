@@ -1,0 +1,107 @@
+
+/** login css */
+
+h2.login_title {
+  margin-top: 25%;
+  margin-bottom: 10%;
+  text-align: center;
+}
+
+.login_under_line {
+  border-top-width: 0px;
+  position: absolute;
+  bottom: 15%;
+  width: 98%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+
+}
+
+.login_none_account {
+  position: absolute;
+  bottom: 8%;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.login_none_account_link {
+  text-decoration: none;
+  margin-left: 10px;
+  color: #2d79ff;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+.login_input #id {
+  width: 75%;
+  margin: 0 auto;
+  display: block;
+  border: solid 1px #dfdfdf;
+  border-bottom: solid 0px;
+  border-radius: 5px 5px 0px 0px;
+  background-color: #f1f1f1;
+}
+
+.login_input #password {
+  width: 75%;
+  margin: 0 auto;
+  display: block;
+  border: solid 1px #dfdfdf;
+  border-radius: 0px 0px 5px 5px;
+  background-color: #f1f1f1;
+}
+
+.login_input #id::placeholder {
+  color: blue;
+  font-size: 1.5em;
+}
+
+.login_password_forgot {
+  margin-top: 3%;
+  text-align: right;
+  margin-bottom: 8%;
+}
+
+.login_password_forgot_link {
+  text-decoration: none;
+  color: #5d91ec;
+  font-size: 0.8rem;
+  margin-right: 15%;
+}
+
+.login_button {
+  background-color: #c4c4c4;
+  width: 70%;
+  margin: auto;
+  color: #fcfcfc;
+}
+
+.login_input input {
+  color: #929292;
+  height: 3rem;
+  padding-left: 5%;
+}
+
+.login_input input::-webkit-input-placeholder {
+  /*padding-left: 5%;*/
+  font-size: 1rem;
+  color: #cccccc;
+}
+.login_input input:-moz-placeholder {
+  /*padding-left: 5%;*/
+  font-size: 1rem;
+  color: #cccccc;
+}
+.login_input input::-moz-placeholder {
+  /*padding-left: 5%;*/
+  font-size: 1rem;
+  color: #cccccc;
+}
+.login_input input:-ms-input-placeholder {
+  /*padding-left: 5%;*/
+  font-size: 1rem;
+  color: #cccccc;
+}

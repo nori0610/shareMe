@@ -1,20 +1,143 @@
 <ons-page class="main_pages"  id="camera-page">
+
   <ons-toolbar>
-    <div class="center" id="toolbar-title">Camera</div>
+    <div class="center"><span class="camera_edit_subject" style="">商品情報入力</span></div>
+    <div class="right" onclick="cameraSave();" style="position: relative;"><span class="camera_edit_save_on" style="">Share!</span></div>
   </ons-toolbar>
-  <div class="camera-view">
-    <ons-icon class="camera-icon cameraPlaceholder" icon="ion-android-camera"></ons-icon>
-    <canvas id="preview" style="display:none;width:100%;height:100%;"></canvas>
+
+  <div class="camera-area" style="position: relative;height: 45%; margin-top: 10px;">
+    <div class="camera-view-01" style="box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .5);background-color: #e6e6e6;border: solid 1px #8f8f8f;border-style: dashed;position: absolute;left: 5%;height: 80%;width: 43%;top: 10%;">
+      <img id="preview-plus-01" src="img/plus.png" style="width: 25px;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);-webkit-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);">
+      <canvas id="preview-01" style="display:none;width:100%;height:100%;"></canvas>
+    </div>
+    <div class="camera-view-02" style="box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .5);background-color: #e6e6e6;border: solid 1px #8f8f8f;border-style: dashed;position: absolute;right: 5%;height: 38%;width: 43%;top: 10%;"> 
+      <img id="preview-plus-02" src="img/plus.png" style="width: 25px;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);-webkit-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);">
+      <canvas id="preview-02" style="display:none;width:100%;height:100%;"></canvas>
+    </div>
+    <div class="camera-view-03" style="box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .5);background-color: #e6e6e6;border: solid 1px #8f8f8f;border-style: dashed;position: absolute;right: 5%;height: 38%;width: 43%;bottom: 9%;">
+      <img id="preview-plus-03" src="img/plus.png" style="width: 25px;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);-webkit-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);">
+      <canvas id="preview-03" style="display:none;width:100%;height:100%;"></canvas>
+    </div>
   </div>
-  <div class="camera-button">
-    <ons-icon class="camera-icon select-photo" icon="fa-circle-o">
-    </ons-icon>
-    <input type="file" id="cameraImageFile" />
-    <input type="hidden" id="location" />
-    <input type="hidden" id="latitude" />
-    <input type="hidden" id="longitude" />
+  <input style="display: none;" type="file" id="cameraImageFile-01" />
+  <input style="display: none;" type="file" id="cameraImageFile-02" />
+  <input style="display: none;" type="file" id="cameraImageFile-03" />
+
+  <div class="camera_edit_area_head_1" style="height: 10%;background-color: #c9c9c9;position: relative;">
+    <div class="camera_edit_title_1" style="position: absolute;left: 5%;top: 50%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);font-weight: bold;color: #6e6e6e;font-size: 0.9rem;">商品情報1</div>
+    <div class="camera_add_button_1" onclick="camera_add();" style="position: absolute;right: 5%;top: 50%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);font-weight: bold;color: #6e6e6e;font-size: 0.9rem;padding: 2px 8px 2px 8px;background-color: white;border-radius: 8px;border: solid 1px;">商品情報追加</div>
   </div>
+
+  <ons-list class="camera_edit_area_body_1">
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="item_name_1" style="">商品名</label>
+      <ons-input class="camera-edit-input" input-id="item_name_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="category_1" style="">カテゴリ</label>
+      <ons-input class="camera-edit-input" input-id="category_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="color_1" style="">色</label>
+      <ons-input class="camera-edit-input" input-id="color_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="size_1" style="">サイズ</label>
+      <ons-input class="camera-edit-input" input-id="size_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="brand_1" style="">ブランド</label>
+      <ons-input class="camera-edit-input" input-id="brand_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="jan_code_1" style="">JANコード</label>
+      <ons-input class="camera-edit-input" input-id="jan_code_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+  </ons-list>
   
+
+  <template id="camera-notice1.html">
+    <ons-alert-dialog id="camera-notice1" modifier="rowfooter">
+      <div class="alert-dialog-content">
+        投稿が完了しました。
+      </div>
+      <div class="alert-dialog-footer">
+        <ons-alert-dialog-button onclick="hideAlertDialog('camera-notice1')">OK</ons-alert-dialog-button>
+      </div>
+    </ons-alert-dialog>
+  </template>
+
+
+  <div class="tmp_camera_edit_area_head" style="display: none;height: 10%;background-color: #c9c9c9;position: relative;">
+    <div class="camera_edit_title_1" style="position: absolute;left: 5%;top: 50%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);font-weight: bold;color: #6e6e6e;font-size: 0.9rem;">商品情報1</div>
+    <div class="camera_add_button_1" onclick="camera_add();" style="position: absolute;right: 5%;top: 50%;transform: translateY(-50%);-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);font-weight: bold;color: #6e6e6e;font-size: 0.9rem;padding: 2px 8px 2px 8px;background-color: white;border-radius: 8px;border: solid 1px;">商品情報追加</div>
+  </div>
+
+  <ons-list class="tmp_camera_edit_area_body" style="display: none;">
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="item_name_1" style="">商品名</label>
+      <ons-input class="camera-edit-input" input-id="item_name_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="category_1" style="">カテゴリ</label>
+      <ons-input class="camera-edit-input" input-id="category_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="color_1" style="">色</label>
+      <ons-input class="camera-edit-input" input-id="color_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="size_1" style="">サイズ</label>
+      <ons-input class="camera-edit-input" input-id="size_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="brand_1" style="">ブランド</label>
+      <ons-input class="camera-edit-input" input-id="brand_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+    <ons-list-item class="camera-list-item" tappable style="">
+
+      <label class="camera_edit_label" for="jan_code_1" style="">JANコード</label>
+      <ons-input class="camera-edit-input" input-id="jan_code_1" style="width: 95%;"></ons-input>
+
+    </ons-list-item>
+
+  </ons-list>
+
   <style type="text/css">
     #cameraImageFile {
       opacity: 0;

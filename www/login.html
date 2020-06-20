@@ -1,0 +1,39 @@
+<ons-page class="main_pages"  id="login">
+
+    <h2 class="login_title">ログイン</h2>
+    
+    <hr class="login_under_line" color="#e3e2e2">
+
+    <div class="login_none_account">
+        アカウントを持っていない場合
+        <a class="login_none_account_link" onclick="loginNavigator.pushPage('register.html');">会員登録</a>
+    </div>
+    
+    <div class="login_input">
+        <p style="margin-bottom: 0px;">
+            <ons-input id="id" modifier="" placeholder="メールアドレス or shareMe ID" float value=""></ons-input>
+        </p>
+        <p style="margin-top: 0px;margin-bottom: 0px;">
+            <ons-input id="password" modifier="" type="password" placeholder="パスワード" float value=""></ons-input>
+        </p>
+        <p class="login_password_forgot">
+            <a class="login_password_forgot_link" onclick="loginNavigator.pushPage('forgot_password.html');">パスワードを忘れた方</a>
+        </p>
+        <p>
+            <ons-button class="login_button" modifier="large" onclick="login();">ログイン</ons-button>
+        </p>
+    </div>
+
+    <template id="login-error-dialog.html">
+      <ons-alert-dialog id="login-error-dialog" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          メールアドレス or shareMe ID およびパスワードが違います
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('login-error-dialog')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+</ons-page>
+

@@ -1,0 +1,73 @@
+
+/** follow css */
+
+.follow_list_subject,
+.follower_list_subject {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.follow_info,
+.follower_info {
+    position: absolute;
+  bottom: 20%;
+  font-size: 0.8rem;
+  left: 20%;
+}
+
+.follow_name,
+.follower_name {
+  position: absolute;
+  left: 20%;
+  bottom: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.follow-list-style,
+.follower-list-style {
+  position: relative;
+  height: 80px;
+  border-bottom: solid 1px #d5d5d5;
+  background-color: white;
+}
+
+.follow_button_off {
+  position: absolute;
+  right: 5%;
+  bottom: 30%;
+  width: 30%;
+  height: 40%;
+  background-color: white;
+  border: solid 1px #515151;
+  color: black;
+  line-height: 1.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.follow_button {
+  position: absolute;
+  right: 5%;
+  bottom: 30%;
+  width: 30%;
+  height: 40%;
+  background-color: #07bfec;
+  color: white;
+  line-height: 1.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.follow_image,
+.follower_image {
+  border: solid 2px #dedede;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+  position: absolute;
+  left: 2%;
+  top: 15%;
+  object-fit: cover;
+}

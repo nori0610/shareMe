@@ -1,24 +1,72 @@
 
-const applicationKey = 'xx';
-const clientKey = 'xx';
-const applicationId = 'xx';
+let acl_init = 0;
 
-const ncmb = new NCMB(applicationKey, clientKey);
-let current_user = ncmb.User.getCurrentUser();
+// 初期表示処理
+document.addEventListener('init', function(event) {
+  var page = event.target;
+  if (page.id == "home-page") {
+    if (current_user && acl_init == 0) {
+      var user = ncmb.User.getCurrentUser();
+      var acl = new ncmb.Acl;
+      acl.setPublicReadAccess(true).setUserWriteAccess(user, true);
+      user
+        .set('authData', {})
+        .set('acl', acl)
+        .update()
+        .then(() => {
+          acl_init = 1;
+        })
+        .catch((err) => {
+        })
+    }
+  }
 
-if (current_user) {
-  ncmb.User
-    .equalTo('objectId', current_user.objectId)
-    .fetch()
-    .then((user) => {
-      current_user = user;
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-}
-const noProfileImage = 'img/user.png';
-const noProfileName  = 'No name';
+  //  var page = event.target;
+//  loginCheck();
+//  if (!current_user) {
+//    $('#nav')[0].resetToPage('login.html', {animation: 'fade'});
+//  } else {
+//    loadTimeline();
+//  }	
+//  if (page.id === 'main') {
+//  }else if (page.id == "home-page") {
+//  }else if (page.id == 'profile-page') {
+//    //getMyPhotos();
+//  }else if (page.id == "search-page") {
+//    //$('.loading').hide();
+//  }
+});
+
+// if (current_user) {
+//   ncmb.User
+//     .equalTo('objectId', current_user.objectId)
+//     .fetch()
+//     .then((user) => {
+//       current_user = user;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+// }
+
+
+// const aclUpdate = () => {
+//   var user = ncmb.User.getCurrentUser();
+//   var acl = new ncmb.Acl;
+//   acl.setPublicReadAccess(true).setUserWriteAccess(user, true);
+//   user
+//     .set('authData', {})
+//     .set('acl', acl)
+//     .update()
+//     .then(() => {
+//       return true;
+//     })
+//     .catch((err) => {
+//       return false;
+//     });
+// }
+
+
 
 const myPhotos = new Proxy({}, {
   set: (target, key, value) => {
@@ -26,11 +74,11 @@ const myPhotos = new Proxy({}, {
       target[key] = value;
       updateMyPhotos($('#grid_view'), target);
     }
-    timelinePhotos[key] = value;
+    oneTimelinePhotos[key] = value;
   }
 });
 
-const timelinePhotos = new Proxy({}, {
+const oneTimelinePhotos = new Proxy({}, {
   set: (target, key, value) => {
     if (!target[key]) {
       target[key] = value;
@@ -39,101 +87,21 @@ const timelinePhotos = new Proxy({}, {
   }
 });
 
-// 初期表示処理
-document.addEventListener('init', function(event) {
-  var page = event.target;
-  if (page.id === 'main') {
-    loginCheck();
-    if (!current_user) {
-      // ログインページを表示
-      $('#nav')[0].resetToPage('register.html', {animation: 'fade'});
-    }
-  }
-  if (page.id == "home-page") {
-    if (!current_user) {
-      // ログインページを表示
-      $('#nav')[0].pushPage('register.html', {animation: 'fade'});
-    } else {
-      loadTimeline();
-    }
-  }
-  if (page.id == 'profile-page') {
-    getMyPhotos();
-  }
-  if (page.id == "search-page") {
-    $('.loading').hide();
-  }
-});
-
-// ユーザ登録/ログイン処理です
-const login = () => {
-  // 入力された情報です
-  const page = $('#nav')[0].topPage;
-  const userName = page.querySelector('#username').value;
-  const password = page.querySelector('#password').value;
-  // ユーザを作成します
-  const user = new ncmb.User();
-  user
-    .set("userName", userName)
-    .set("password", password)
-    // 登録処理を実行します
-    .signUpByAccount()
-    .then(() => {
-      // 成功したらログイン処理を行います
-      return ncmb.User.login(userName, password)
-    })
-    .catch((err) => {
-      // 失敗したらログイン処理を行います
-      return ncmb.User.login(userName, password)
-    })
-    .then((user) => {
-      current_user = user;
-      // 写真の取得
-      getMyPhotos();
-      // ログイン成功したらメイン画面に遷移します
-      $('#nav')[0].pushPage('main.html', {animation: 'fade'});
-    })
-    .catch((err) => {
-      // 失敗したらアラートを出します
-      ons.notification.alert('Login failed.')
-    });
-};
-
-// ログアウト処理です
-const logout = () => {
-  // 確認ダイアログを出します
-  ons.notification.confirm({
-    message: 'Are you sure?'
-  })
-  .then((id) => {
-    // id == 1 はOKボタンを押した場合です
-    if (id != 1) {
-      throw 1;
-    }
-    // ログアウト処理
-    return ncmb.User.logout();
-  })
-  .then(() => {
-    // 処理完了したら登録/ログイン画面に遷移します
-    current_user = null;
-    for (let key in myPhotos) {
-        delete myPhotos[key];
-    }
-    for (let key in timelinePhotos) {
-        delete timelinePhotos[key];
-    }
-    $('#nav')[0].resetToPage('register.html', {animation: 'fade'});
-  })
-  .catch((err) => {
-    // 確認ダイアログでCancelを選んだ場合
-    console.log(err);
-  })
-};
+// const sumTimelinePhotos = new Proxy({}, {
+//   set: (target, key, value) => {
+//     if (!target[key]) {
+//       target[key] = value;
+//       updateTimeline(target);
+//     }
+//   }
+// });
 
 const searchPhoto = (e) => {
+  let allFlg = 0;
   const dom = $('#search-page');
   const photoView = dom.find('#photos');
   const Photo = ncmb.DataStore('Photo');
+  const Item = ncmb.DataStore('Item');
   if (e.keyCode === 13 && 
      (e.shiftKey === false || e.ctrlKey === false || e.altKey === false)
    ) {
@@ -143,26 +111,65 @@ const searchPhoto = (e) => {
   }
   // 検索実行
   if (e.target.value.trim() === '') {
-    return false;
+    allFlg = 1;
   }
   // スペースで分割
   const keywords = e.target.value.split(' ');
   const aryOr = [];
-  for (let i = 0; i < keywords.length; i += 1) {
-    const subPhoto = ncmb.DataStore('Photo');
-    const keyword = keywords[i];
-    // 配列の中に検索条件を追加していきます
-    aryOr.push(
-      Photo
-        .regularExpressionTo('message', `.*${keyword}.*`)
-    );
-  }
-  // 複数条件指定された場合は or 検索とします
-  const promise = aryOr.length === 1 ? 
-    showPhotos(photoView, aryOr[0]) :
-    showPhotos(photoView, Photo.or(aryOr));
-}
-    
+  let items_arr = [];
+  let results = null;
+  let results2 = null;
+  // let error = null;
+  // let error2 = null;
+
+  (async () => {
+
+    if ( allFlg == 1 ) {
+      results = await p(Item.fetchAll());
+      for (let i in results) {
+        const item = results[i];
+        if ( item.photoObjectId != '' && items_arr.indexOf(item.photoObjectId) < 0 ) { // && !item.photoObjectId in items_arr
+          items_arr.push(item.photoObjectId);
+        }
+      }
+    } else {
+      for (let i = 0; i < keywords.length; i += 1) {
+        const keyword = keywords[i];
+        results = await p(Item.regularExpressionTo("brand", `.*${keyword}.*`).fetchAll());
+        results2 = await p(Item.regularExpressionTo("name", `.*${keyword}.*`).fetchAll());
+        for (let i in results) {
+          const item = results[i];
+          if ( item.photoObjectId != '' && items_arr.indexOf(item.photoObjectId) < 0 ) { // && !item.photoObjectId in items_arr
+            items_arr.push(item.photoObjectId);
+          }
+        }
+        for (let i in results2) {
+          const item = results2[i];
+          if ( item.photoObjectId != '' && items_arr.indexOf(item.photoObjectId) < 0 ) {
+            items_arr.push(item.photoObjectId);
+          }
+        }
+      }
+    }
+
+    console.log(items_arr);
+    $(photoView).hide();
+    const thumbnailTemplate = $('#searchThumbnailTemplate').html();
+    presults = await p(Photo.in('objectId', items_arr).include('user').order('-createDate').fetchAll());
+    updateSearch(presults);
+    $(photoView).show();
+    $('.loading').hide();
+  })();
+};
+
+const p = (func) => {
+  return new Promise(res => {
+    func
+      .then(result => res(result, null))
+      .catch(error => res(null, error));
+  })
+};
+
 const tapPhoto = (objectId) => {
   const Photo = ncmb.DataStore('Photo');
   Photo
@@ -171,6 +178,11 @@ const tapPhoto = (objectId) => {
     .then((photo) => {
       $('#nav')[0].pushPage('single.html', {animation: 'slide', data: {photo: photo}});
     });
+}
+
+const tapUser = (objectId) => {
+  jumpUserObjectId = objectId;
+  $('#nav')[0].pushPage('user.html', {animation: 'slide', data: {}}); //photo: photo
 }
     
 const showPhotos = (dom, Photo) => {
@@ -219,113 +231,51 @@ const editProfile = () => {
   `));
 };
 
-const isFollow = (user) => {
-  return current_user.follows && current_user.follows.indexOf(user.objectId) > -1
-}
-
-const showUserPage = (dom, user) => {
-  dom.find('.profileImage').attr('src', user.profileImage);
-  dom.find('.realName').text(user.realName);
-  dom.find('.photo_count').text(user.photo_count);
-  dom.find('.follower_count').text(user.follows ? user.follows.length : 0);
-  if (user.objectId == current_user.objectId) {
-    $(dom).find('.follow').attr('disabled', true);
-  }
-  ncmb.User
-    .equalTo('follows', user.objectId)
-    .count()
-    .fetchAll()
-    .then((result) => {
-      dom.find('.follow_count').text(result.count);
-    });
-  
-  // フォローしているかチェック
-  if (isFollow(user)) {
-    $(dom).find('.follow').text('Unfollow');
-  }
-  
-  // ユーザの写真を表示
-  const Photo = ncmb.DataStore('Photo');
-  Photo
-    .limit(20)
-    .equalTo('userObjectId', user.objectId)
-    .fetchAll()
-    .then((photos) => {
-      updateMyPhotos(dom.find('#grid_view'), photos);
-    });
-  
-  // フォロー/アンフォロー処理
-  $(dom).find('.follow').on('click', (e) => {
-    let follows = current_user.follows;
-    if (!follows) {
-      // まだデータがない場合は初期化
-      follows = [user.objectId];
-    } else {
-      // すでにフォローしているかチェック
-      if (follows.indexOf(user.objectId) > -1) {
-        // フォローしていればアンフォロー
-        follows = follows.filter((u) => {
-          return (u !== user.objectId);
-        });
-      } else {
-        // フォローしていなければフォロー
-        follows.push(user.objectId);
-      }
-    }
-    current_user
-      .set('follows', follows)
-      .set('authData', {})  // ないとエラーになります
-      .update()
-      .then(() => {
-        // フォロー状態をチェックしてボタンの文字を変更
-        $(dom).find('.follow').text(isFollow(user) ? 'Unfollow' : 'Follow');
-      })
-  });
-};
-
-//The show event listener does the same thing as the one above but on the search page when it's shown.
-
 document.addEventListener('show', function(event) {
   var page = event.target;
-  
+  console.log(page.id);
+
   if (page.id == 'single-page') {
     showSinglePage($(page), page.data.photo);
+    return;
   }
   
-  if (page.id == "profile-page") {
-    showProfilePage($(page));
+  if (page.id == 'home-page') {
+    if ( timelineDisp == 0 ) { loadTimeline(); }
+    timelineDisp = 1;
+    return;
   }
-  
-  if (page.id == 'camera-page') {
-    showCameraPage($(page));
+
+  if (page.id == 'search-page') {
+    searchPhotoList();
+    return;
+    //showUserPage($(page), page.data.user);
   }
-  
-  if (page.id == 'user-page') {
-    showUserPage($(page), page.data.user);
-  }
+
 });
 
 const showSinglePage = (dom, photo) => { 
+  dom.find('.post').empty();
   const Like = ncmb.DataStore('Like');
   Like
     .equalTo('photoObjectId', photo.objectId)
     .fetch()
     .then((like) => {
-      appendPhoto(dom.find('.post'), photo, like);
+      appendPhoto(dom.find('.post'), photo, like, "1");
     });
   dom.find('.photo-title').text(photo.message);
 }
 
 const showProfilePage = (dom) => {
   dom.find('#profileImageUpload').on('click', (e) => {
-    // if (ons.platform.isIOS()) {
-      // $(e.target).click();
-    // }
+    if (ons.platform.isIOS()) {
+      $(e.target).click();
+    }
     dom.find('#profileImageFile').click();
   });
 }
 
-const showCameraPage = (dom) => {
+const showCameraPageBk = (dom) => {
   dom.find('.cameraPlaceholder').show();
   dom.find('#preview').hide();
   dom.find('#latitude').val('');
@@ -346,7 +296,7 @@ const showCameraPage = (dom) => {
       img.onload = (e) => {
         loadExif(img)
           .then((exif) => {
-            drawImage(img, exif.orientation);
+            drawImage(img, exif.orientation, "#preview");
             waitAndUpload();
             return getAddress(exif)
           })
@@ -400,20 +350,21 @@ function generateStoryBubbles(element) {
 //The Like function is used to make the white heart appear in front of the picture as well as make the like button into a red heart and vice versa.
 
 const like = (num) => {
-  if ($("#button-post-like-"+num).hasClass("like")) {
+  console.log(num);
+  if ($(".button-post-like-"+num).hasClass("like")) {
     // Like済み
-    $("#button-post-like-"+num)
+    $(".button-post-like-"+num)
       .removeClass('ion-ios-heart like')
       .addClass('ion-ios-heart-outline');
   } else {
     // まだLikeしていない
-    $("#button-post-like-"+num)
+    $(".button-post-like-"+num)
       .removeClass('ion-ios-heart-outline')
       .addClass('ion-ios-heart like');
     // 写真の上のハート表示/600ms後に消す処理
-    $("#post-like-"+num).css("opacity", 1);
+    $(".post-like-"+num).css("opacity", 1);
     setTimeout(function(){
-      $("#post-like-"+num).css('opacity', 0);
+      $(".post-like-"+num).css('opacity', 0);
     }, 600);
   }
   likeCreateOrUpdate(num.replace(/^post\-/, ''));
@@ -421,7 +372,7 @@ const like = (num) => {
 
 const comment = (num) => {
   ons.notification.prompt({
-    message: 'Comment?'
+    message: 'コメントの入力'
   })
   .then((text) => {
     if (text) {
@@ -429,11 +380,12 @@ const comment = (num) => {
       const messageTemplate = $('#comment').html();
       const message = Mustache.render(messageTemplate, {
         messages: [{
-          profileImage: current_user.profileImage,
           username: current_user.userName,
-          comment: text
+          comment: text,
+          userObjectId: current_user.objectId
         }]
       });
+//          profileImage: current_user.profileImage,
       $(`#${num}`).find('.post-comments').append(ons.createElement(message));
     }
   })
@@ -455,9 +407,9 @@ const likeCreateOrUpdate = (photoObjectId, comment) => {
       if (comment) {
         let messages = like.messages;
         const message = {
-          profileImage: current_user.profileImage,
           username: current_user.userName,
-          comment: comment
+          comment: comment,
+          userObjectId: current_user.objectId
         };
         if (messages) {
           messages.push(message);
@@ -522,77 +474,6 @@ const getAddress = (exif) => {
   });
 }
 
-const loadExif = (img) => {
-  return new Promise((res, rej) => {
-    EXIF.getData(img, function() {
-      const lat = EXIF.getTag(this, "GPSLatitude");
-      const long = EXIF.getTag(this, "GPSLongitude");
-      const orientation = EXIF.getTag(this, "Orientation");
-      res({
-        lat: lat,
-        long: long,
-        orientation: orientation
-      });
-    });
-  })
-}
-
-const drawImage = (img, orientation) => {
-  const canvas = $("#preview")[0];
-  const ctx = canvas.getContext('2d');
-  const size = 320;
-  const offset = {width: 0, height: 0};
-  let rotate = 0;
-  let width = height  = size;
-  canvas.width = canvas.height = size;
-  let originalWidth = img.width;
-  let originalHeight = img.height;
-  switch (orientation) {
-    case 2:
-      ctx.translate(width, 0);
-      ctx.scale(-1, 1);
-      break;
-    case 3:
-      ctx.translate(width, height);
-      ctx.rotate(Math.PI);
-      break;
-    case 4:
-      ctx.translate(0, height);
-      ctx.scale(1, -1);
-      break;
-    case 5:
-      ctx.rotate(0.5 * Math.PI);
-      ctx.scale(1, -1);
-      break;
-    case 6:
-      ctx.rotate(0.5 * Math.PI);
-      ctx.translate(0, -height);
-      break;
-    case 7:
-      ctx.rotate(0.5 * Math.PI);
-      ctx.translate(width, -height);
-      ctx.scale(-1, 1);
-      break;
-    case 8:
-      ctx.rotate(-0.5 * Math.PI);
-      ctx.translate(-width, 0);
-      break;
-    default:
-      break;
-  }
-  if (originalWidth > originalHeight) {
-    // 横長
-    width =  320 * originalWidth / originalHeight;
-    offset.width = -1 * (width - size) / 2;
-  }
-  if (originalWidth < originalHeight) {
-    // 縦長
-    height =  320 * originalHeight / originalWidth;
-    offset.height = -1 * (height - size) / 2;
-  }
-  ctx.drawImage(img, offset.width, offset.height, width, height);
-};
-
 const waitAndUpload = () => {
   let photoObjectId;
   setTimeout(() => {
@@ -629,8 +510,8 @@ const waitAndUpload = () => {
         .set('message', message)
         .set('location', location);
       if (latitude != '' && longitude != '') {
-        const geoPoint = new ncmb.GeoPoint(Number(latitude), Number(longitude));
-        photo.set('geo', geoPoint);
+        //const geoPoint = new ncmb.GeoPoint(Number(latitude), Number(longitude));
+        //photo.set('geo', geoPoint);
       }
       return photo.save();
     })
@@ -658,7 +539,7 @@ const waitAndUpload = () => {
   }, 3000);
 }
 
-const canvasToBlob = () => {
+const canvasToBlobBk = () => {
   const type = 'image/jpeg';
   const canvas = $("#preview")[0];
   const dataurl = canvas.toDataURL(type);
@@ -670,23 +551,6 @@ const canvasToBlob = () => {
   const blob = new Blob([buffer.buffer], {type: type});
   return blob;
 }
-
-const fileUpload = (fileName, file) => {
-  return new Promise((res, rej) => {
-    ncmb.File
-      .upload(fileName, file)
-      .then((f) => {
-        res(filePath(f.fileName));
-      })
-      .catch((err) => {
-        rej(err);
-      })
-  });
-};
-
-const filePath = (fileName) => {
-  return `https://mbaas.api.nifcloud.com/2013-09-01/applications/${applicationId}/publicFiles/${fileName}`;
-};
 
 const updateRealName = (e) => {
   const realName = e.target.value;
@@ -732,110 +596,370 @@ const updateMyPhotos = (dom, photos) => {
 };
 
 // 写真を追加します
-const appendPhoto = (dom, photo, like) => {
+const appendPhoto = (dom, photo, like, pageType) => {
   const id = `post-${photo.objectId}`;
+  let userIcon = '';
   photo.location = photo.location || '';
-  if (!photo.user.profileImage)
-    photo.user.profileImage = noProfileImage;
-  let favorite_message = 'No one favorites this photo yet.';
-  if (like && Object.keys(like).length > 0) {
-    let who = 'someone';
-    if (like.users.indexOf(current_user.objectId) > -1) {
-      who = 'You';
-    }
-    favorite_message = `
-      <b> ${who} </b> and 
-      ${like.users.length - 1} other liked this.`;
-  }
-  const template = $('#photo').html();
-  photo.liked   = like && Object.keys(like).length > 0 && like.users.indexOf(current_user.objectId) > -1 ? true : false;
-  photo.timeAgo = timeago().format(photo.createDate);
-  const messageTemplate = $('#comment').html();
-  const messages = Mustache.render(messageTemplate, {
-    messages: like ? like.messages : []
-  });
+  // console.log(photo);
+  ncmb.User
+    .equalTo('objectId', photo.userObjectId)
+    .fetch()
+    .then((user) => {
+      userIcon = user.profileImage;
+      if (userIcon == undefined){
+        userIcon = noProfileImage;
+      }
+      photo.user.userName = user.userName;
+      photo.user.objectId = user.objectId;
+      let favorite_message = 'No one favorites this photo yet.';
+      if (like && Object.keys(like).length > 0) {
+        let who = 'someone';
+        if (like.users.indexOf(current_user.objectId) > -1) {
+          who = 'You';
+        }
+        favorite_message = `
+        <b> ${who} </b> and 
+        ${like.users.length - 1} other liked this.`;
+      }
+      photo.liked   = like && Object.keys(like).length > 0 && like.users.indexOf(current_user.objectId) > -1 ? true : false;
+      photo.timeAgo = timeago().format(photo.createDate);
+      const messageTemplate = $('#comment').html();
+      let messages = "";
+      let onclickphoto = "";
+      let onclickuser = "";
+      if(pageType=="0"){
+        const template = $('#photo').html();
+        $('.post-comments').show();
+        onclickphoto = "tapPhoto('"+photo.objectId+"')";
+        onclickuser = "tapUser('"+photo.user.objectId+"')";
+        detail_content_render(template, dom, id, photo, favorite_message, messages, onclickphoto, onclickuser, userIcon, pageType);
+      }else if(pageType=="1"){
+        const template = $('#single_photo').html();
+        $('.post-comments').hide();
+        onclickuser = "tapUser('"+photo.user.objectId+"')";
+        let uoid_arr = [];
+        console.log(like.messages);
+        if ( like.messages != undefined ) {
+          for (let i = 0; i < like.messages.length; i++) {
+            uoid_arr.push(like.messages[i].userObjectId);
+          }
+        }
+        let massage_user_hash = {};
+        let message_count = 0;
+        ncmb.User
+          .in('objectId', uoid_arr)
+          .fetchAll()
+          .then((massage_user) => {
+            for (let i = 0; i < massage_user.length; i++) {
+              massage_user_hash[massage_user[i].objectId] = massage_user[i].profileImage;
+            }
+            if ( like.messages != undefined ) {
+              message_count = like.messages.length;
+              for (let i = 0; i < like.messages.length; i++) {
+                if ( like.messages[i].userObjectId in massage_user_hash ) {
+                  like.messages[i].profileImage = massage_user_hash[like.messages[i].userObjectId];
+                } else {
+                  like.messages[i].profileImage = noProfileImage;
+                }
+              }
+            }
+            messages = Mustache.render(messageTemplate, {
+              messages: like ? like.messages : [],
+            });
+            detail_content_render(template, dom, id, photo, favorite_message, messages, onclickphoto, onclickuser, userIcon, pageType);
+            let like_count = 0;
+            if ( like.users != undefined ) {
+              like_count = like.users.length;
+            }
+            $(document).find('#like_count').text(like_count);
+            showItem(photo, message_count);
+          });
+      }
+    });
+}
+
+const detail_content_render = (template, dom, id, photo, favorite_message, messages, onclickphoto, onclickuser, userIcon, pageType) => {
   const content = Mustache.render(template, {
     id: id,
     photo: photo,
     favorite_message: favorite_message,
-    messages: messages
+    messages: messages,
+    onclickphoto: onclickphoto,
+    onclickuser: onclickuser,
+    user_icon: userIcon
   });
   dom.prepend(ons.createElement(content));
-  $(dom).find('.profile_image').on('click', (e) => {
-    $('#nav')[0].pushPage('user.html', {animation: 'slide', data: {user: photo.user}});
-  });
+
+  if ( pageType =="1" ) {
+    $('.slider').slick({
+      dots:true,
+      arrows: true,
+      nextArrow: '<button style="right: -25px!important;" class="slick-next"></button>',
+      prevArrow: '',
+    });
+  }
+  // $(dom).find('.profile_image').on('click', (e) => {
+  //   jumpUserObjectId = photo.userObjectId;
+  //   $('#nav')[0].pushPage('user.html', {animation: 'slide', data: {photo: photo}}); //photo: photo
+  // });
 }
 
 const updateTimeline = (photos) => {
   const Like = ncmb.DataStore('Like');
+  let dup_check_photo = [];
   Like
     .in('photoObjectId', Object.keys(photos))
     .fetchAll()
     .then((likes) => {
       for (let i in photos) {
-        const photo = photos[i];
-        const like = likes.filter((like) => photo.objectId === like.photoObjectId)[0];
-        appendPhoto($('.posts'), photo, like);
+        if ( !dup_check_photo.includes(i) ) {
+          const photo = photos[i];
+          const like = likes.filter((like) => photo.objectId === like.photoObjectId)[0];
+          appendPhoto($('.posts'), photo, like, "0");
+          dup_check_photo.push(i);
+        }
       }
     });
 };
 
-// ログインチェックを行います
-const loginCheck = () => {
-  if (current_user) {
-    current_user
-      .set('sessionTest', !current_user.sessionTest)
-      .set('authData', {})
-      .update()
-      .then(() => {
-        $('.userName').html(current_user.userName);
-        $('.realName').html(current_user.realName || noProfileName);
-        $('.profileImage').attr('src', current_user.profileImage || noProfileImage);
-      })
-      .catch((err) => {
-        $('#nav')[0].pushPage('register.html', {animation: 'fade'});
-      });
+let read_search_num = 0;
+const updateSearch = (photos) => {
+  $('.loading').hide();
+  let row = document.querySelector('#search_thumbnail_card');
+  let col = row.querySelector(".search_thumbnail_card_col");
+  let maxnum = Object.keys(photos).length;
+  let photo_keys = Object.keys(photos);
+  if(read_search_num == maxnum){return;}
+  read_search_num = maxnum;
+  $('#photos').empty();
+  for (let i = 0; i < maxnum / 3; i++) {
+    let row_clone = row.cloneNode(false);
+    row_clone.id = '';
+    row_clone.style = '';
+    for (let j =  i * 3; j < (i + 1) * 3; j++) {
+      let current_photo = photos[photo_keys[j]];
+      let col_clone;
+      if (j >= maxnum) {
+          col_clone = col.cloneNode(false);
+          col_clone.id = '';
+      } else {
+          col_clone = col.cloneNode(true);
+          col_clone.id = String(current_photo.objectId);
+          let ons_card = col_clone.querySelector(".search_thumbnail_card_card");
+          let img = new Image();
+          img.src = current_photo.fileUrl;
+          $(img).on('load', function() {
+              img.classList.add('search_thumbnail');
+              img.setAttribute("onclick", "tapPhoto('"+current_photo.objectId+"')");
+              ons_card.prepend(img);
+          });
+      }
+      col_clone.classList.add("fade_in");
+      row_clone.append(col_clone);
+    }
+    $('#photos').append(row_clone);
   }
-}
+};
+
 
 // タイムライン画像の読み込みです
 const loadTimeline = () => {
   const Photo = ncmb.DataStore('Photo');
   const follows = current_user.follows || [];
-  follows.push(current_user.objectId)
+  let joinFollows = follows.slice();
+  joinFollows.push(current_user.objectId)
   Photo
     .limit(10)
     .include('user')
-    .in('userObjectId', follows)
+    .in('userObjectId', joinFollows)
     .order('createDate')
     .fetchAll()
     .then((photos) => {
       for (let i = 0; i < photos.length; i += 1) {
         const photo = photos[i];
-        timelinePhotos[photo.objectId] = photo;
+        sumTimelinePhotos[photo.objectId] = photo;
       }
+      updateTimeline(sumTimelinePhotos);
+  });
+}
+
+const searchPhotoList = () => {
+  const Photo = ncmb.DataStore('Photo');
+  Photo
+    .limit(10)
+    .order('createDate')
+    .fetchAll()
+    .then((photos) => {
+      updateSearch(photos);
     });
 }
 
-$(document).on('change', '#profileImageFile', (e) => {
-  const file = e.target.files[0];
-  fileUpload(`${ncmb.User.getCurrentUser().objectId}-${file.name}`, file)
-    .then((fileUrl) => {
-      $('.profileImage').attr('src', fileUrl);
-      console.log('fileUpload:' + JSON.stringify(fileUrl, null, 2));
-      // console.log('fileUpload:' + JSON.stringify(current_user, null, 2));
-      // 自分の設定を更新
-      return current_user
-        // .set('authData', {}) // 執筆時点ではこれがないと更新に失敗します
-        .set('profileImage', fileUrl)
-        .update()
-    })
-    .then(() => {
-      // console.log('then fileUpload:' + JSON.stringify(file));
-    })
-    .catch((err) => {
-      // console.log('catch fileUpload:' + JSON.stringify(file));
-      // ons.notification.alert('fileUpload:' + (JSON.stringify(err)));
-      // console.log('catch fileUpload:' + (JSON.stringify(err)));
-    })
-});
+
+
+
+// // 写真を追加します
+// const appendPhoto = (dom, photo, like, pageType) => {
+//   const id = `post-${photo.objectId}`;
+//   let userIcon = '';
+//   photo.location = photo.location || '';
+//   // console.log('photo.user =>');
+//   // console.log(photo.user);
+//   // photoに紐づくユーザ情報を最新に
+//   console.log('start');
+//   ncmb.User
+//     .equalTo('objectId', photo.userObjectId)
+//     .fetch()
+//     .then((user) => {
+//   console.log('get user =>');
+//   console.log(user);
+//   console.log(photo);
+//       photo
+//         .set('user', user)
+//         .save()
+//         .then((result) => {
+//           console.log('photo save =>');
+//           console.log(photo);
+        
+//           console.log('user =>');
+//           console.log(user);
+
+//           // アイコンがない場合は初期値
+//           userIcon = user.profileImage;
+//           if (userIcon == undefined){
+//             userIcon = noProfileImage;
+//           }
+//           let favorite_message = 'No one favorites this photo yet.';
+//           if (like && Object.keys(like).length > 0) {
+//             let who = 'someone';
+//             if (like.users.indexOf(current_user.objectId) > -1) {
+//               who = 'You';
+//             }
+//             favorite_message = `
+//             <b> ${who} </b> and 
+//             ${like.users.length - 1} other liked this.`;
+//           }
+//           const template = $('#photo').html();
+//           photo.liked   = like && Object.keys(like).length > 0 && like.users.indexOf(current_user.objectId) > -1 ? true : false;
+//           photo.timeAgo = timeago().format(photo.createDate);
+//           const messageTemplate = $('#comment').html();
+//           let messages = "";
+//           if(pageType=="1"){
+//             messages = Mustache.render(messageTemplate, {
+//               messages: like ? like.messages : []
+//             });
+//           }
+//           let onclickphoto = "";
+//           if(pageType=="0"){
+//             onclickphoto = "tapPhoto('"+photo.objectId+"')";
+//           }
+//           const content = Mustache.render(template, {
+//             id: id,
+//             photo: photo,
+//             favorite_message: favorite_message,
+//             messages: messages,
+//             onclickphoto: onclickphoto,
+//             user_icon: userIcon
+//           });
+//           dom.prepend(ons.createElement(content));
+//           $(dom).find('.profile_image').on('click', (e) => {
+//             jumpUserObjectId = photo.userObjectId;
+//             $('#nav')[0].pushPage('user.html', {animation: 'slide', data: {photo: photo}}); //photo: photo
+//           });    
+//         });
+//     });
+// }
+
+const jumpAfiLink = (url) => {
+  location.href = url;
+};
+
+const showItem = (photo, message_count) => {
+  let photoObjectId = photo.objectId;
+  let fileUrl = photo.fileUrl;
+  let fileUrl2 = photo.fileUrl2;
+  let fileUrl3 = photo.fileUrl3;
+
+  let row = document.querySelector('#item_thumbnail_card');
+  let col = row.querySelector(".item_thumbnail_card_col");
+
+  const Item = ncmb.DataStore('Item');
+  let items_arr = [];
+  Item
+    .in('photoObjectId', [photoObjectId])
+    .fetchAll()
+    .then((items) => {
+      for (let i in items) {
+        const item = items[i];
+        if ( item.amazonImage != '' ) {
+          items_arr.push(item);
+        }
+      }
+
+      let maxnum = items_arr.length;
+      $('#items').empty();
+    
+      for (let i = 0; i < maxnum / 3; i++) {
+        let row_clone = row.cloneNode(false);
+        row_clone.id = '';
+        row_clone.style = '';
+        for (let j =  i * 3; j < (i + 1) * 3; j++) {
+          let current_item = items_arr[j];
+          let col_clone;
+          if (j >= maxnum) {
+              col_clone = col.cloneNode(false);
+              col_clone.id = '';
+          } else {
+              col_clone = col.cloneNode(true);
+              col_clone.id = String(current_item.objectId);
+              let ons_card = col_clone.querySelector(".item_thumbnail_card_card");
+              let img = new Image();
+              img.src = current_item.amazonImage;
+              //current_item.amazonTitle;
+              $(img).on('load', function() {
+                  img.classList.add('item_thumbnail');
+                  img.setAttribute("onclick", "jumpAfiLink('"+current_item.amazonUrl+"')");
+                  ons_card.prepend(img);
+              });
+//              ons_card.querySelector(".item_title").innerHTML = current_item.amazonTitle;
+              ons_card.querySelector(".item_title").innerHTML = "<span>" + current_item.brand + '</span><br><span style="font-size: 0.9rem;">' + current_item.name + '</span><br><span style="font-size: 0.7rem;">' + current_item.category + '</span><br><span style="font-size: 0.9rem;">サイズ:' + current_item.size + "</span>";
+              ons_card.querySelector(".item_button").addEventListener('click', event => {
+                jumpAfiLink(current_item.amazonUrl);
+              });
+            }
+          col_clone.classList.add("fade_in");
+          row_clone.append(col_clone);
+        }
+        $('#items').append(row_clone);
+      }
+
+      // centerMode: true,
+
+      console.log('fileUrl:'+fileUrl);
+      console.log('fileUrl2:'+fileUrl2);
+      console.log('fileUrl3:'+fileUrl3);
+    
+      if ( fileUrl == undefined ) {
+        $('.slider').slick('slickRemove',0);
+        // $(".slider #single-image-01").remove();
+      }
+      if ( fileUrl2 == undefined ) {
+        $('.slider').slick('slickRemove',1);
+        // $(".slider #single-image-02").remove();
+      }
+      if ( fileUrl3 == undefined ) {
+        $('.slider').slick('slickRemove',2);
+        // $(".slider #single-image-03").remove();
+      }
+
+      if ( message_count > 1 ) {
+        $(".post-comments .list:gt(0)").hide();
+        $(".post-comments").after('<div class="next_comment_link" onclick="showComment();">続きをみる('+message_count+'件)</div>');
+      }
+
+    });
+};
+
+const showComment = (url) => {
+  $(".post-comments .list:gt(0)").show();
+  $(".next_comment_link").remove();
+};

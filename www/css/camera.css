@@ -1,0 +1,91 @@
+
+/** camera css */
+
+.camera_edit_area1,
+.camera_edit_area2 {
+  height: 10%;
+  background-color: #e8e8e8;
+  position: relative;
+}
+
+.camera_edit_area1_subject,
+.camera_edit_area2_subject {
+  font-size: 0.9rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  color: #a7a7a7;
+}
+
+.camera_edit_label {
+  position: absolute;
+  padding-left: 15px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #787878;
+}
+
+.camera-edit-input input {
+    text-align: right;
+}
+
+
+.camera_edit_subject {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.camera_edit_save_on {
+  padding-right: 20%;
+  font-size: 0.9rem;
+  color: #5ce458;
+}
+
+.camera_edit_save_off {
+  padding-right: 20%;
+  font-size: 0.9rem;
+  color: #9c9c9c;
+}
+
+#camera-page .toolbar {
+  overflow: initial;
+}
+
+#camera-page .toolbar .left,
+#camera-page .toolbar .center,
+#camera-page .toolbar .right {
+  background-color: #9f9f9f;
+  height: 58px;
+  z-index: 100000;
+}
+
+#camera-page .camera_edit_subject {
+  color: white;
+  line-height: 58px;
+}
+
+.camera_edit_save_on {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  font-size: 0.9rem;
+  color: #79ff75;
+  font-weight: bold;
+  padding: 4px 4px 0px 0px;
+  background-color: #494949;
+  border-radius: 30px;
+  border: solid 2px white;
+}
+
+.post-like-count {
+  padding: 8px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+

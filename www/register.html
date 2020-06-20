@@ -1,24 +1,60 @@
-<ons-page class="main_pages"  id="register-page">
-  <ons-toolbar>
-    <div class="center">Register / Login</div>
-  </ons-toolbar>
+<ons-page class="main_pages" id="register">
 
-  <div class="content" style="background-color: white !important">
+    <div class="back_position left"><ons-back-button></ons-back-button></div>
 
-    <div style="padding: 14px 6px 14px 16px;text-align: center;">
-      <div class="profile_wrapper">
-        <div style="text-align: center; margin-top: 30px;">
-          <p>
-            <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>
-          </p>
-          <p>
-            <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
-          </p>
-          <p style="margin-top: 30px;">
-            <ons-button onclick="login()">Register / Login</ons-button>
-          </p>
-        </div>
-      </div>
+    <h2 class="register_title">新規登録</h2>
+    
+    <div class="register_input">
+        <p style="margin-bottom: 0px;">
+            <ons-input id="register_id" modifier="" placeholder="メールアドレス" float></ons-input>
+        </p>
+        <p>
+            <ons-button class="register_button" modifier="large" onclick="user_regist();">新規登録</ons-button>
+        </p>
     </div>
-  </div>
+
+    <template id="regist-error1.html">
+      <ons-alert-dialog id="regist-error1" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          メールアドレスを入力してください。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error1')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-error2.html">
+      <ons-alert-dialog id="regist-error2" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          正しいメールアドレスを入力してください。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error2')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-error3.html">
+      <ons-alert-dialog id="regist-error3" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          入力されたメールアドレスは既に登録されています。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-error3')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
+    <template id="regist-notice1.html">
+      <ons-alert-dialog id="regist-notice1" modifier="rowfooter">
+        <div class="alert-dialog-content">
+          登録メールを送信しました。
+        </div>
+        <div class="alert-dialog-footer">
+          <ons-alert-dialog-button onclick="hideAlertDialog('regist-notice1')">OK</ons-alert-dialog-button>
+        </div>
+      </ons-alert-dialog>
+    </template>
+
 </ons-page>

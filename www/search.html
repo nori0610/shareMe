@@ -5,21 +5,31 @@
 
       <div>
         <div>
-          <ons-progress-circular indeterminate class="loading"></ons-progress-circular>
+          <!-- <ons-progress-circular indeterminate class="loading"></ons-progress-circular> -->
           <ons-row id="photos">
           </ons-row>
         </div>
       </div>
-      <template id="thumbnailTemplate">
+
+      <template id="searchThumbnailTemplate">
+
+        <!--
         <div>
-          {{#photos}}
-            <ons-col>
-              <img class="search_thumbnail" onclick="tapPhoto('{{objectId}}')" src="{{fileUrl}}">
-            </ons-col>
-          {{/photos}}
+          <ons-col>
+            <img class="search_thumbnail" onclick="tapPhoto('{{photo.objectId}}')" src="{{photo.fileUrl}}">
+          </ons-col>
         </div>
+-->
       </template>
-      <style type="text/css">
+
+      <ons-row id="search_thumbnail_card" style="display: none;">
+        <ons-col class="search_thumbnail_card_col" onclick="">
+            <ons-card class="search_thumbnail_card_card">
+            </ons-card>
+        </ons-col>
+      </ons-row>
+
+  <style type="text/css">
         .stories-tab {
           padding-top: 8px;
           background-color: #f6f6f6;
@@ -72,7 +82,7 @@
         }
 
         .search_thumbnail {
-          width: 100%;
+          /* width: 100%; */
         }
 
         .search_box {
@@ -88,6 +98,29 @@
           text-align: center;
           height: 28px;
         }
+
+        .search_thumbnail_card_card {
+          position: relative;
+          margin: 0 auto;
+          padding: 0;
+          border-radius: 0;
+          min-height: 140px;
+          padding-top: 75%;/*　トリミングしたい枠の高さ（固定にしたい場合はサイズを入力）　*/
+          overflow: hidden;/*　画像が枠からはみ出た部分はトリミング（非表示）する　*/
+        }
+
+        .search_thumbnail_card_card img{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          /* 画像の最大サイズは枠の1.5倍まで */
+          max-width: 150%;
+          max-height: 150%;
+        }
+
       </style>
 
     </ons-page>

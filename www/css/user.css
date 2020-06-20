@@ -1,0 +1,156 @@
+
+/** user css */
+
+.user_photo {
+  width: 100%;
+}
+.user_photo_card_card {
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 0;
+}
+
+.user_image_main {
+  border: solid 2px #dedede;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 5%;
+  object-fit: cover;
+}
+
+#user_info_name {
+  position: absolute;
+  top: 25%;
+  text-align: center;
+  width: 100%;
+}
+
+.user_info {
+  font-size: 0.9rem;
+  position: absolute;
+  top: 31%;
+  text-align: center;
+  width: 100%;
+}
+
+.user_follow_info {
+  font-size: 0.8rem;
+  position: absolute;
+  top: 36%;
+  text-align: center;
+  width: 100%;
+}
+
+#user_follow_num {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#user_follower_num {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.user_input {
+  position: absolute;
+  top: 42%;
+  text-align: center;
+  width: 100%;
+}
+
+.user_button {
+  width: 50%;
+  height: 42px;
+  font-size: 0.8rem;
+  background-color: #07bfec;
+  text-align: center;
+  line-height: 34px;
+}
+
+.user_button_off {
+  width: 50%;
+  height: 42px;
+  font-size: 0.8rem;
+  background-color: #ffffff;
+  text-align: center;
+  line-height: 34px;
+  color: black;
+  border: solid 1px #9b9b9b;
+  font-weight: bold;
+}
+
+#user_photo_msg {
+  position: absolute;
+  top: 60%;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+
+.user_edit_cancel {
+  padding-left: 15%;
+  font-size: 0.9rem;
+  color: #178bea;
+}
+
+.user_edit_subject {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.user_edit_save_on {
+  padding-right: 20%;
+  font-size: 0.9rem;
+  color: #5ce458;
+}
+
+.user_edit_save_off {
+  padding-right: 20%;
+  font-size: 0.9rem;
+  color: #9c9c9c;
+}
+
+.user_edit_area1,
+.user_edit_area2 {
+  height: 10%;
+  background-color: #e8e8e8;
+  position: relative;
+}
+
+.user_edit_area1_subject,
+.user_edit_area2_subject {
+  font-size: 0.9rem;
+  font-weight: bold;
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  color: #a7a7a7;
+}
+
+.user_edit_image,
+.user_edit_label {
+  padding-left: 15px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #787878;
+}
+
+#previewUserImageComp {
+  display: none;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #6af376;
+  margin-left: auto;
+  padding-right: 8%;
+}
+
+#previewUserImageFile {
+  display:none;
+  width:100%;
+  height:100%;
+}

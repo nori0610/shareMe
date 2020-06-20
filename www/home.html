@@ -14,9 +14,10 @@
 
 <template id="photo">
   <ons-card id="{{id}}" class="post">
+
     <ons-list-item class="post_title">
       <div class="left">
-        <img class="profile_image list-item__thumbnail" src="{{photo.user.profileImage}}" >
+        <img class="profile_image list-item__thumbnail" src="{{user_icon}}" onclick="{{onclickuser}}">
       </div>
       <div class="center">
         <div class="list-item__title"><b>{{photo.user.userName}}</b></div>
@@ -29,19 +30,19 @@
       </div>
     </ons-list-item>
 
-    <div style="text-align: center; position: relative;" ondblclick="like('{{id}}')">
-      <ons-icon size="150px" id="post-like-{{id}}" class="post-like" icon="ion-ios-heart"></ons-icon>
-      <img class="post-image" width="320" height="320" src="{{photo.fileUrl}}">
+    <div id="profile-post-image" style="text-align: center; position: relative;">
+      <ons-icon size="150px" class="post-like-{{id}} post-like" icon="ion-ios-heart" onclick="{{onclickphoto}}"></ons-icon><!--ondblclick="like('{{id}}')"-->
+      <img class="post-image" width="320" height="320" src="{{photo.fileUrl}}" onclick="{{onclickphoto}}">
     </div>
 
     <ons-list-item class="post-button-bar" modifier="nodivider">
       <div class="center" style="padding-top: 0px">
         <ons-button class="post-button" modifier="quiet" onclick="like('{{id}}')">
           {{#photo.liked}}
-            <ons-icon id="button-post-like-{{id}}" icon="ion-ios-heart" class="ion-ios-heart like"></ons-icon>
+            <ons-icon class="button-post-like-{{id}} ion-ios-heart like" icon="ion-ios-heart"></ons-icon>
           {{/photo.liked}}
           {{^photo.liked}}
-            <ons-icon id="button-post-like-{{id}}" icon="ion-ios-heart-outline"></ons-icon>
+            <ons-icon class="button-post-like-{{id}}" icon="ion-ios-heart-outline"></ons-icon>
           {{/photo.liked}}
         </ons-button>
         <ons-button class="post-button" modifier="quiet" onclick="comment('{{id}}')"><ons-icon icon="ion-ios-chatbubble-outline"></ons-icon></ons-button>
@@ -51,6 +52,7 @@
         <ons-button class="post-button" modifier="quiet"><ons-icon icon="md-bookmark-outline"></ons-icon></ons-button>
       </div>
     </ons-list-item>
+
     <div class="post-like-info">
       {{{favorite_message}}}
     </div>
@@ -60,6 +62,7 @@
     <div class="post-comments">
       {{{messages}}}
     </div>
+    
   </ons-card>
 </template>
 
@@ -159,7 +162,7 @@
 
   .post-like {
     opacity: 0;
-    width: 100%;
+    /* width: 100%; */
     position: absolute;
     top: 25%;
     color: white;
